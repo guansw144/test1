@@ -1,0 +1,113 @@
+module laser
+use parameter
+implicit none
+contains
+!---------------------------------------------------------------------------
+subroutine asx(t0,tcenter)
+implicit none
+real(8)::t0,tcenter
+
+t0=-dble(ntmax/2)*dt
+tcenter=0.d0
+end subroutine
+!-----------------------------------------------------------------------
+!real(8) function mmg(tt)
+!implicit none
+!real(8)::tt
+!
+!mmg=omg1+2.d0*dlog(2.d0)*(esi/(1+esi*esi))*tt/tao/tao
+!!mmg=omg1+4.d0*dlog(2.d0)*(esi/(1+esi*esi))*tt/tao/tao
+!
+!end function
+!!---------------------------------------------------------------------------
+!real(8) function dmmg(tt)
+!implicit none
+!real(8)::tt
+!
+!dmmg=2.d0*dlog(2.d0)*(esi/(1+esi*esi))*1/tao/tao
+!!dmmg=4.d0*dlog(2.d0)*(esi/(1+esi*esi))*1/tao/tao
+!end function
+!!-------------------------------------------------------------------------
+!real(8) function ffm(tt)
+!implicit none
+!real(8)::tt
+!
+!ffm=dexp(-2.d0*dlog(2.d0)*(1.d0/(1+esi*esi))*tt*tt/tao/tao)
+!!ffm=dexp(-4.d0*dlog(2.d0)*(1.d0/(1+esi*esi))*tt*tt/tao/tao)
+!end function
+!!-----------------------------------------------------------------------
+!real(8) function dffm(tt)
+!implicit none
+!real(8)::tt
+!
+!dffm=dexp(-2.d0*dlog(2.d0)*(1.d0/(1+esi*esi))*tt*tt/tao/tao)*  &
+!(-4.d0*dlog(2.d0)*(1.d0/(1+esi*esi))*tt/tao/tao)
+!
+!!dffm=dexp(-4.d0*dlog(2.d0)*(1.d0/(1+esi*esi))*tt*tt/tao/tao)*  &
+!!(-8.d0*dlog(2.d0)*(1.d0/(1+esi*esi))*tt/tao/tao)
+!
+!end function
+!!--------------------------------------------------------------------
+!real(8) function aax(tt)
+!implicit none
+!real(8)::tt
+!aax=aa0*ffm(tt)*dsin(mmg(tt)*tt+cep)*(1.d0/(1+epa*epa)**0.5)
+!end  function
+!!-------------------------------------------------------------------------
+!real(8) function eex(tt)
+!implicit none
+!real(8)::tt
+!eex=(-aa0*dffm(tt)*dsin(mmg(tt)*tt+cep)-aa0*ffm(tt)*dcos(mmg(tt)*tt+cep)*(dmmg(tt)*tt+mmg(tt)))*(1.d0/(1+epa*epa)**0.5)
+!end function
+!!------------------------------------------------------------------------
+!real(8) function aay(tt)
+!implicit none
+!real(8)::tt
+!real(8)::t0,tcenter
+!aay=aa0*ffm(tt)*dcos(mmg(tt)*tt+cep)*(epa/(1+epa*epa)**0.5)
+!end function
+!!------------------------------------------------------------------
+!real(8) function eey(tt)
+!implicit none
+!real(8)::tt
+!real(8)::t0,tcenter
+!eey=-(aa0*dffm(tt)*dcos(mmg(tt)*tt+cep)-aa0*ffm(tt)*dsin(mmg(tt)*tt+cep)*(dmmg(tt)*tt+mmg(tt)))*(epa/(1+epa*epa)**0.5)
+!end function
+!-------------------------------------------------------------------------------------------------------------
+real(8) function eex(tt)
+implicit none
+real(8)::tt,tcenter,t0
+real(8)::ns
+
+if(tt>=0.d0.and.tt<ppi/omg1)then   
+eex=-1.d0*(aa0*omg1*dsin(omg1*tt)/ppi+(aa0*omg1)*(omg1*tt)*dcos(omg1*tt)/ppi)
+else
+eex=-1.d0*(aa0*omg1)*dcos(omg1*tt)
+end if
+end function
+!----------------------------------------------------------------------------------------
+real(8) function aax(tt)
+implicit none
+real(8)::tt,tcenter,t0
+real(8)::ns
+
+if(tt>=0.d0.and.tt<ppi/omg1)then   
+aax=aa0*(omg1*tt/ppi)*dsin(omg1*tt)
+else
+aax=aa0*dsin(omg1*tt)
+end if
+end function
+!--------------------------------------------------------------------------------------------------
+real(8) function eey(tt)
+implicit none
+real(8)::tt
+eey=0.d0
+end function
+!---------------------------------------------------------------------------------------------------
+real(8) function aay(tt)
+implicit none
+real(8)::tt
+aay=0.d0
+end function
+
+end module
